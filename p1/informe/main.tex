@@ -1,0 +1,267 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[catalan]{babel}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{fancyhdr}
+\renewcommand{\baselinestretch}{1.1} 
+\pagestyle{fancy}
+\lhead{Laia Lluís Blanch, Carlo Sala Gancho}
+\rhead{Pràctica 1. Errors.}
+
+\geometry{
+  left=30mm,
+  right=30mm,
+  top=25mm,
+  bottom=25mm,
+}
+
+\begin{document}
+\section*{Problema 1}
+\subsection*{(a)}
+  Un cop hem creat el codi i l'hem executat, veiem diferències en els valors que hem obtingut segons si han estat avaluats en la funció de precisió simple o bé en la funció de la precisió doble.\\
+  Els resultats obtinguts han estat els següents:
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{10mm}|p{35mm}|p{35mm}|}
+      \hline 
+      & Precisió simple & Precisió doble \\ 
+      \hline 
+      $f(x_0)$  
+      & 
+      $0$
+      & 
+      $0.4999997329749008$ \\
+      \hline
+      \end{tabular}
+    \caption{Resultats apartat 1(a)}
+    \end{center}
+  \end{table}
+  Podem veure, doncs, que en el cas de precisió simple la funció dona 0, ja que el $cos(x_0)$ és tan proper a 1 que, degut al nombre de les xifres significatives que tenim en precisió simple, el numerador $1-cos(x_0)$ s'anu\lgem a. En el cas del resultat de la precisió doble, el resultat té més precisió, ja que tenim un nombre de xifres significatives major i $1 - cos(x_0) \neq 0$.
+  \subsection*{(b)}
+  En aquest cas volem reduir l'error perquè el resultat sigui més precís. És a dir, en l'apartat anterior hem vist que, en la funció de precisió simple, s'anu\lgem ava el numerador, és a dir, $1-cos(x_0) = 0$. Per tant, utilitzant que $2 \cdot sin^2(x/2) = 1 - cos(x)$:
+  \begin{equation*}
+    f(x) = \frac{1-cos(x)}{x^2} = \frac{2\cdot sin^2(x/2) }{x^2}
+  \end{equation*}
+  Aleshores, els resultats obtinguts amb la segona definició de la funció són els següents:
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{10mm}|p{35mm}|p{35 mm}|}
+      \hline 
+      & Precisió simple & Precisió doble \\ 
+      \hline 
+      $f(x_0)$  
+      & 
+      $0.5$
+      & 
+      $0.499999999994$ \\
+      \hline
+      \end{tabular}
+    \caption{Resultats apartat 1(b)}
+    \end{center}
+  \end{table}
+  De manera que hem reduït l'error de l'apartat (a), i el resultat que obtenim en precisió simple no s'anu\lgem a, i el que obtenim en precisió doble és més precís que l'obtingut anteriorment.
+  \subsection*{(c)}
+  El que observem en aquest problema és que segons com expressem una funció poden aparèixer errors o no, ja que, si tractem amb números que puguin causar cance\lgem acions, el resultat que obtinguem serà més propens a tenir errors.\\
+  També observem que hi ha força diferències entre el resultat que obtenim en precisió simple i precisió doble. Aquest és degut al nombre de xifres significatives que té cada resultat. I això provoca que el resultat en precisió doble sigui més precís.
+  \newpage
+\section*{Problema 2}
+  \subsection*{(a)}
+  Podem comprovar que, fent servir els valors $a = 0.1, b = 2000, c = 0.1$, el programa comet errors de cance\lgem ació quan agafem l'arrel positiva, ja que $\sqrt{b^2 - 4ac} \approx b$ quan $b$ és molt més gran que $4ac$.
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{10mm}|p{35mm}|p{35mm}|}
+      \hline 
+      & Precisió simple & Precisió doble \\ 
+      \hline 
+      $+$
+      &
+      $0$
+      &
+      $-4.9999999874 \cdot 10^{-5}$ \\
+      \hline
+      $-$
+      &
+      $-2 \cdot 10^4$
+      &
+      $-1.999999995 \cdot 10^4$\\
+      \hline
+      \end{tabular}
+    \caption{Resultats apartat 2(a)}
+    \end{center}
+  \end{table}
+  Veiem que, en efecte, els càlculs en precisió simple mostren un error important, ja que s'anu\lgem a quan l'arrel és positiva.
+  \subsection*{(b)}
+  Per desfer-nos de l'error de cance\lgem ació que es produeix en agafar l'arrel positiva, usarem la identitat notable de la diferència de quadrats:
+  \begin{equation*}
+    \frac{-b + \sqrt{b^2 - 4ac}}{2a} \cdot \frac{b + \sqrt{b^2 - 4ac}}{b + \sqrt{b^2 - 4ac}}
+    =
+    \frac{-2c}{b + \sqrt{b^2 - 4ac}}
+  \end{equation*}
+  D'aquesta manera, evitarem la cance\lgem ació que teníem a l'apartat (a).
+  \subsection*{(c)}
+  Per mostrar les diferències entre les dues expressions farem servir el mateix exemple de l'apartat (a): $a = 0,1$, $b = 2000$, $c = 0,1$. Només mostrarem els resultats per l'arrel positiva:
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{10mm}|p{35mm}|p{35mm}|}
+      \hline 
+      & Precisió simple & Precisió doble \\ 
+      \hline 
+      $1a$
+      &
+      $0$
+      &
+      $-4.9999999874 \cdot 10^{-5}$ \\
+      \hline
+      $2a$
+      &
+      $-4.99999999 \cdot 10^{-5}$
+      &
+      $-4.9999999875 \cdot 10^{-5}$\\
+      \hline
+      \end{tabular}
+    \caption{Resultats apartat 2(c)}
+    \end{center}
+  \end{table}
+  Veiem que, en efecte, els resultats de la primera fórmula mostren un error de cance\lgem ació clar a fórmula en precisió simple. Per contra, veiem que amb la nostra proposta evitem l'error i només hi ha el petit error de l'ordre de $10^{-13}$ que ja acceptem a l'hora de treballar amb precisió simple. També veiem, si comparem els dos resultats de precisió doble que l'error de cance\lgem ació també es propagava amb precisió doble. Ara bé, el seu efecte és molt petit, de l'ordre de $10^{-15}$, i el podem considerar negligible.
+  \newpage
+\section*{Problema 3}
+  \subsection*{(b)}
+  Com ens diu l'apartat (a) hem programat dos programes de manera que calculin la variància mostral de dues formes equivalents. Un cop hem executat el programa amb el vector $x = \{10000, 10001, 10002\}$ hem obtingut els següents resultats:
+	\begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{20mm}|p{20 mm}|p{20 mm}|p{20 mm}|}
+			\hline 
+			Simple 1 & Simple 2  & Doble 1  & Doble 2  \\ 
+			\hline  
+			$1$
+			&
+			$0$
+			& 
+			$1$
+			&
+			$1$ \\
+			\hline
+      \end{tabular}
+		\caption{Resultats apartat (b)}
+    \end{center}
+  \end{table}
+  Veiem que en les mesures en precisió simple hi ha discrepàncies en el resultat. Això es degut al fet que la mantissa del número en precisió simple no és prou llarga com per notar la petita diferència entre $10000$, $10001$ i $10002$. Desenvolupem la 2a fórmula per veure-ho:
+  \begin{equation} \label{aquasio}
+      s^2_n = \frac{1}{n-1} \left( \sum_{i=1}^{n} x_i^2 - \frac{1}{n} \left( \sum_{i=1}^{n} x_i \right) ^2 \right)
+      \approx \frac{1}{2} \left( 3x_0^2 - \frac{1}{3} (3x_0)^2 \right) = 0
+  \end{equation}
+  Veiem llavors que quan els nostres valors són molt propers entre si i són grans, el programa en precisió simple no té prou precisió com per diferenciar entre els dos sumatoris i fa que el resultat s'anu\lgem i.
+  \subsection*{(c)}
+  Per veure els errors que apareixen usant cada una de les dues fórmules farem servir dos exemples. El primer serà $x = \{ 1000000, 1000001, \dotsi , 1000099 \}$. Vegem els resultats:
+	\begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{20mm}|p{20 mm}|p{20 mm}|p{20 mm}|}
+			\hline 
+			Simple 1 & Simple 2  & Doble 1  & Doble 2  \\ 
+			\hline  
+			$841.80872$
+			&
+			$762600.75$
+			& 
+			$841.66667$
+			&
+			$841.66667$ \\
+			\hline
+      \end{tabular}
+		\caption{Resultats apartat (c1)}
+    \end{center}
+  \end{table}
+  Veiem que clarament es repeteix la conclusió que havíem obtingut a l'apartat (b) i l'error que hi ha en precisió simple a la segona fórmula és molt significatiu. Vegem ara un 2n exemple encara més evident, fent servir $x = \{ 10000000, 10000001, \dotsi , 10000099 \}$. El resultat hauria de ser el mateix que en el cas anterior. Obtenim el següent:
+	\begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{20mm}|p{20 mm}|p{20 mm}|p{20 mm}|}
+			\hline 
+			Simple 1 & Simple 2  & Doble 1  & Doble 2  \\ 
+			\hline  
+			$862.12122$
+			&
+			$86767016$
+			& 
+			$841.66667$
+			&
+			$841.59596$ \\
+			\hline
+      \end{tabular}
+		\caption{Resultats apartat (c2)}
+    \end{center}
+  \end{table}
+  Veiem que, altra vegada, tornem a veure un error enorme en la segona fórmula en precisió simple. Veiem també que en aquest exemple la 2a fórmula en precisió doble comença a tenir una mica d'error, ja que estem treballant amb números molt grans.
+  \subsection*{(d)}
+  Notem que el que ens està passant constantment en aquest problema és el que hem explicat a \ref{aquasio}. La segona fórmula no està ben condicionada ja que, amb números grans, necessitem molta precisió per poder-la fer servir sense errors. Observem en cada un dels exemples que els errors es van fent cada com més grans conforme anem fent més grans els números a avaluar.
+\section*{Problema 4}
+  \subsection*{(c)}
+  Executant el programa fixant $n = 10000$, vegem quins són els resultats, tenint en compte que la primera fila és pel sumatori amb $k$ creixent i la segona fila el sumatori és amb $k$ decreixent:
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{5mm}|p{27mm}|p{30 mm}|p{30 mm}|p{40 mm}|}
+      \hline 
+      & Precisió simple & Precisió doble & Error simple & Error doble\\
+      \hline 
+      $(a)$
+      &
+      $1.6447253$
+      &
+      $1.644834071848065$
+      &
+      $0.00020874412$
+      &
+      $9.999500016122376E-05$\\
+      \hline
+      $(b)$
+      &
+      $1.644834$
+      &
+      $1.64483407184806$
+      &
+      $0.00010002525$
+      &
+      $9.999500016677487E-05$\\
+      \hline
+      \end{tabular}
+    \caption{Resultats apartat 4(a) 4(b) i 4(c)}
+    \end{center}
+  \end{table}
+  Observem que fent servir precisió simple necessitem que la funció sigui la que és decreixent per tenir un error acceptable. En canvi, executant fins a $n=10000$ veiem que tant en la creixent com en la decreixent té suficient precisió com per obtenir el mateix resultat en les dues.\\
+  En conclusió, veiem que la funció (b) és més precisa per aproximar $\frac{\pi^2}{6}$ ja que en precisió simple la funció (a) perd molta precisió amb un número relativament baix d'iteracions, i si augmentéssim el nombre d'iteracions fins un nombre determinat, trobaríem que la funció (a) en precisió doble comença a perdre precisió.
+  \subsection*{(d)}
+  Partint de la coneguda fórmula per aproximar $\pi$:
+  \begin{equation*}
+    \pi = 2 \sqrt{3} \cdot \left( 1 - \frac{1}{3 \cdot 3} + \frac{1}{3^2 \cdot 5} - \frac{1}{3^3 \cdot 7} + \dotsi \right)
+    \Longrightarrow
+    \frac{\pi^2}{6} = 2 \cdot \left( 1 - \frac{1}{3 \cdot 3} + \frac{1}{3^2 \cdot 5} - \frac{1}{3^3 \cdot 7} + \dotsi \right)^2
+  \end{equation*}
+  Comprovem ara els resultats fixant $n = 30$ (noti's que estem fent servir un nombre d'iteracions ridícul comparat amb el d'abans):
+  \begin{table}[H]
+    \begin{center}
+      \begin{tabular}[c]{|p{30mm}|p{30 mm}|}
+      \hline 
+      Precisió simple & Precisió doble \\
+      \hline 
+      $1.6449341$
+      &
+      $1.644934066848227$ \\
+      \hline
+      \end{tabular}
+    \caption{Resultats apartat 4(d)}
+    \end{center}
+  \end{table}
+  Observem que, cada un en la seva precisió, tots els decimals que obtenim són correctes i coincideixen amb l'enunciat. Clarament comprovem que hem trobat una fórmula molt bona per aproximar el valor $\frac{\pi^2}{6}$. Veiem que amb un número d'iteracions molt més petit, de l'ordre de 300 vegades menys, aconseguim un valor molt més aproximat a la realitat.
+  \newpage
+\section*{Conclusions}
+  Un cop hem resolt els 4 problemes de la pràctica traiem les següents conclusions:
+  \begin{itemize}
+    \item El resultat en precisió simple perd precisió en relació al de precisió doble, ja que no té prou xifres significatives com per donar un resultat on l'error sigui el menor possible.
+    \item Segons amb quina expressió tractem ens podem trobar amb errors de cance\lgem ació, de manera que amb expressions equivalents podem resoldre el problema amb més precisió. Aquest fet l'hem observat en tots els problemes.
+  \end{itemize}
+  En conclusió, en tots els problemes hem observat que el resultat en precisió doble és més acurat, ja que com més xifres significtives tinguem més precís és el resultat. A més, hem observat que si es produeix algun error de cance\lgem ació sol passar als resultats que han estat avaluats en precisió simple. De manera que, és més habitual que el resultat estigui contaminat.\\
+  En aquesta pràctica hem après a entendre com funcionen els errors i com es propaguen en els diferents càlculs que fa la màquina. També hem entès les diferents funcions que té el llenguatge C per avaluar diferents valors tant en precisió simple com en precisió doble.
+\end{document}
