@@ -1,0 +1,6 @@
+# fet per ignorar binaris (fitxers sense extensió)
+*
+!*/
+!*.*
+
+*.pdf
