@@ -1,0 +1,219 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[catalan]{babel}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Entrega 2. Zeros de funcions.}
+\rhead{Laia Lluís Blanch, Carlo Sala Gancho}
+
+\geometry{
+	a4paper,
+	headheight=13.6pt,
+	left=25mm,
+	right=25mm,
+	top=30mm,
+	bottom=30mm
+}
+\renewcommand{\baselinestretch}{1.15}
+
+\begin{document}
+\section*{Problema 1}
+	\subsection*{(a)}
+	Calculant en precisió simple i doble l'expressió donada de $\alpha$ i, substituint aquest valor a la funció $f(x) = x^3 - x - 40$, obtenim els següents resultats:
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}[c]{|p{8mm}|p{26mm}|p{47mm}|}
+			\hline 
+			 & Precisió simple & Precisió doble \\ 
+			\hline
+			$f(x)$  
+			& 
+			$-0.0011138916$
+			& 
+			$-3.268496584496461 \cdot 10^{-12}$ \\
+			\hline
+			\end{tabular}
+		\caption{Resultats apartat 1(a)}
+		\end{center}
+	\end{table}
+	Veiem, clarament, que hi ha un error de cance\lgem ació. Aquest es deu al fet que $\frac{1}{9}\cdot \sqrt{32397} \approx 19.9990741. $ Per tant, $20 - \frac{1}{9}\cdot \sqrt{32397}$ és molt proper a 0 i, en fer l'arrel cúbica, es produeix l'error de cance\lgem ació que observem en avaluar $f(\alpha)$.
+	\subsection*{(b)}
+	En aquest segon apartat hem observat que, tant per la funció en precisió simple com per la funció en precisió doble, les iteracions necessàries per obtenir els decimals requerits han estat 6.
+	\begin{itemize}
+		\item $E_a < 10^{-8} \Longrightarrow 3.5173936$
+		\item $E_a < 10^{-15} \Longrightarrow 3.517393589019775$
+	\end{itemize}
+	\subsection*{(c)}
+	En aquest tercer apartat considerarem $f(x) = x^3 - x - 400$. I, per tant, haurem de calcular la fórmula de Cardano que correspon a aquesta equació. Per tant, en aquest cas considerarem: \footnotemark
+	\footnotetext{Aquesta fórmula l'hem obtinguda a partir de la aplicació al nostre cas particular del mètode general de Cardano que hem trobat a l'article de la Wikipedia en castellà anomenat \textit{Método de Cardano}.}
+	\begin{equation*}
+		\beta = \left( 200 + \sqrt{40000 - \frac{1}{27}} \right)^{1/3} + \left( 200-\sqrt{40000-\frac{1}{27}} \right)^{1/3} 
+	\end{equation*}
+	Per tant, si calculant el valor de $\beta$ en precisió doble obtenim $\beta = 7.413302725859883$. En efecte, es troba dins de l'interval $[2,8]$ que proposa l'enunciat. Vegem també que, calculant $f(\beta) = 3.253148861404043 \cdot 10^{-10}$ en precisió doble, trobem altra vegada un error de cance\lgem ació, de la mateixa classe que el que ens trobàvem a l'apartat (a).\\
+	En la taula següent veiem les iteracions necessàries i el resultat que obtenen els tres mètodes numèrics proposats a l'hora de calcular l'arrel de l'equació amb un $E_a < 10^{-15}$:
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}[c]{|p{15mm}|p{32mm}|p{32mm}|p{32mm}|}
+			\hline 
+			& Bisecció & Secant & Newton \\ 
+			\hline 
+			$f(\beta)$ 
+			& 
+			$7.413302725857898$
+			& 
+			$7.413302725857898$ 
+			&
+			$7.413302725857898$
+			\\
+			\hline
+			Iteracions
+			&
+			$49$ & $7$ & $11$ \\
+			\hline
+			\end{tabular}
+		\caption{Resultats: c1, c2, c3}
+		\end{center}
+	\end{table}
+	Observem que amb els tres mètodes obtenim el mateix resultat, el que varia és el nombre d'iteracions per arribar a aquest resultat.\\
+	Veiem també que, anant en contra de la intuïció, que el mètode òptim en aquest cas és el de la secant, quan sabem que el mètode de Newton té un ordre de convergència major. Això passa perquè el mètode de Newton requereix d'un pivot proper al valor exacte per poder ser ràpid, i en aquest cas estàvem fent servir un pivot allunyat.\\
+	Finalment, sabem que l'ordre de convergència del mètode de la bisecció és 1, per tant, és lineal. El del mètode de Newton és 2, per tant, és quadràtic. L'ordre de convergència del mètode de la secant és $\phi = \frac{1 + \sqrt{5}}{2} \approx 1,618$.\\
+	Com a estratègia per calcular arrels d'aquest tipus d'equacions proposem fer primer un parell o tres d'iteracions de la bisecció per aconseguir un pivot més proper i aplicar sobre aquest pivot el mètode de Newton.
+	\newpage
+\section*{Problema 2}
+	En aquest problema seguirem considerant $f(x) = x^3 - x - 400$, però farem servir la iteració $x_{k+1} = x_k - b_k f(x_k)$, on $b_{k+1} = b_k \left( 2 - f'(x_{k+1}) \cdot b_k \right)$.\\
+	Com a pivot hem triat $x_0 = 6$, ja que ens sembla prou proper al valor exacte que hem trobat al problema 1 i és prou lluny com per poder avaluar el comportament d'aquesta iteració.\\
+	Veiem que, per trobar una aproximació de $\beta$ amb 15 decimals correctes, ens calen 8 iteracions. Estem davant d'una iteració bona per calcular el l'arrel d'aquesta equació.\\
+	Per estudiar l'ordre de convergència ho farem a partir de la igualtat que se'ns proposa al problema, $e_k = \left| x_k - x_{k-1} \right|$. Observem en la següent taula algunes de les iteracions, on la primera fila correspon a $\frac{e_k}{e_{k-1}}$, la segona a $\frac{e_k}{\left( e_{k-1} \right)^2}$ i la tercera a $\frac{e_k}{\left( e_{k-1} \right)^3}$.
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}[c]{|p{30mm}|p{30mm}|p{30mm}|p{35mm}|}
+			\hline 
+			$x_1 - x_0$& $x_2 - x_1$ & $x_2 - x_3$ & $x_7 - x_6$\\
+			\hline 
+			$0.31416284979$
+			$-0.17692328909$
+			$0.09963574702$
+			&
+			$-0.49068687932$
+			$0.87958900970$
+			$-1.57672205755$
+			&
+			$0.61383952973$
+			$2.24246542692$
+			$8.19212668347$
+			&
+			$7.00741313163 \cdot 10^{-5}$
+			$2.44637135032$
+			$85405.7363424$
+			\\
+			\hline
+			\end{tabular}
+		\caption{Resultats: Iteracions problema 2}
+		\end{center}
+	\end{table}
+	Observem en les iteracions que el resultat de la primera fila es fa petit, i va tendint cap a $0$. Per contra, veiem com el resultat de la tercera fila es va fent gran conforme avancem. L'únic que es manté constant (dins de l'ordre de magnitud, s'entén) és la segona fila. D'aquí n'inferim que aquesta iteració té ordre de convergència quadràtic.
+\newpage
+\section*{Problema 3}
+	Seguint amb la mateixa equació que els anteriors problemes, treballem ara amb la iteració coneguda com el mètode de Halley.\\
+	Fent servir com a pivot $x_0 = 5$, necessitem només 5 iteracions per trobar 15 decimals correctes de $\beta$. Comprovem, per tant, que amb un pivot més allunyat que al problema 2, necessitem menys iteracions per aconseguir el mateix resultat. Fins i tot, usant el mateix pivot que al problema 2, $x_0 = 6$, es necessiten tan sols 4 iteracions. Això ens fa pensar que l'ordre de convergència és major en aquesta iteració, cosa que comprovarem en la taula posterior, que segueix la mateixa suggerència del problema 2:
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}[c]{|p{25mm}|p{27mm}|p{27mm}|p{35mm}|}
+			\hline 
+			$x_1 - x_0$& $x_2 - x_1$ & $x_3 - x_2$ & $x_4 - x_3$ \\ 
+			\hline 
+			$1$\newline
+			$0.46698842$
+			$0.218078182$
+			$0.101839985$
+			$0.047558093$
+			& 
+			$0.12686215$
+			$0.059243157$
+			$0.027665868$
+			$0.0129196398$
+			$0.00603332216$
+			& 
+			$0.00096376721$
+			$0.00354769415$
+			$0.01305930902$
+			$0.0480722253$
+			$0.1769572066$
+			&
+			$8.45279221075 \cdot 10^{-10}$
+			$3.22850955695 \cdot 10^{-6}$
+			$0.0123311608$
+			$47.0983662656$
+			$179890.291650$
+			\\
+			\hline
+			\end{tabular}
+		\caption{Resultats: Iteracions problema 3}
+		\end{center}
+	\end{table}
+	De la mateixa manera que al problema 2, observem que l'ordre no pot ser ni lineal ni quadràtic, ja que ambdós resultats es van fent petits conforme avancen les iteracions. Veiem també que tant el quàdruple com el quíntuple es fan grans conforme avancen les iteracions. Així doncs, comprovem que la convergència d'aquesta iteració és cúbica, confirmant les sospites que teníem abans de comprovar-ho numèricament.
+	\newpage
+\section*{Problema 4}
+	En efecte, comprovem que aquesta iteració tendeix cap a $\pi$. Fent algunes iteracions, veiem que fent-ne 5 ja troba 13 decimals correctes de $\pi$. Ara bé, quan fem la sisena iteració comença a perdre decimals que ja havia trobat degut a la precisió finita. Veiem en la taula següent el resultat que obté amb la cinquena iteració:
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}[c]{|p{32mm}|p{32 mm}|}
+			\hline 
+			$p_k$ & $\pi$\\ 
+			\hline 
+			$3.14159265358988$
+			& 
+			$3.141592653589793$
+			\\
+			\hline
+			\end{tabular}
+		\caption{Resultats: 5a iteració problema 4}
+		\end{center}
+	\end{table}
+	Veiem, per tant, que la convergència cap a $\pi$ és prou bona. Vegem ara l'ordre de convergència, calculant $\frac{|p_k - \pi|}{|p_{k-1} - \pi|^i}$, on $i \in \mathbf{R}$ i $1 \leq i \leq 3$. En la següent taula veiem els resultats:
+	\begin{table}[H]
+		\begin{center}
+			\begin{tabular}[c]{|p{22mm}|p{30mm}|p{25mm}|p{34mm}|}
+			\hline 
+			$p_1 - p_0$& $p_3 - p_2$ & $p_4 - p_3$ & $p_5 - p_4$ \\ 
+			\hline 
+			$0.0536807954$
+			$0.0625353401$
+			$0.0728504252$
+			&  
+			$3.487768897 \cdot 10^{-6}$
+			$0.03979667416$
+			$454.09409874$
+			&
+			$0.00012494534$
+			$408762.859942$
+			$1337281410108$
+			&
+			$2.27906976744$
+			$5967452183.62$
+			$1.56250089706 \cdot 10^{27}$
+			\\
+			\hline
+			\end{tabular}
+		\caption{Resultats: Iteracions problema 4}
+		\end{center}
+	\end{table}
+	Observant les dues primeres iteracions comprovem que l'ordre de convergència és quadràtic, ja que és l'únic valor que es manté constant (dins de l'ordre de magnitud, s'entén). A partir de les següents iteracions veiem que la convergència comença a degenerar i el valor quadràtic es comença a fer cada cop més gran.\\
+	Aquesta degeneració es dona perquè, conforme anem avançant d'iteracions, $a_k \approx b_k$ i $c_k = a_k^2 - b_k^2 \approx 0$ i, degut a la precisió finita, es produeixen errors de cance\lgem ació com els que havíem vist i treballat a la pràctica 1.
+	\newpage
+\section*{Conclusions}
+	Després de resoldre els quatre exercicis d'aquesta pràctica en traiem les següents conclusions:
+	\begin{itemize}
+		\item Quan busquem zeros de funcions amb mètodes numèrics, degut a la precisió finita i treballar a prop de $0$, es produeixen alguns errors de cance\lgem ació, tal i com hem comprovat al problema 1 amb les fórmules de Cardano.
+		\item L'ordre de convergència és molt important a l'hora de triar un mètode per trobar un zero, però també és clau com sigui aquell mètode i les necessitats que tingui, tal com hem vist al problema 1 amb el mètode de Newton, que tot i tenir un ordre de convergència més gran que no pas el mètode de la secant, necessitava més iteracions per obtenir el mateix resultat.
+	\end{itemize}
+	En conclusió, podem dir que no hi ha un mètode òptim per resoldre qualsevol equació. Com hem anat veient, el mateix mètode ofereix resultats molt dispars en diversos problemes, o bé simplement canviant el pivot com passava amb el mètode de Newton.\\
+	En aquesta pràctica hem après com fer servir diversos mètodes numèrics i, a nivell de programació, hem aprofundit amb els \textit{loops} i les clàusules \textit{if}/\textit{else}, que ens han permès crear els codis per fer els diferents càlculs d'aquesta pràctica.
+\end{document}
