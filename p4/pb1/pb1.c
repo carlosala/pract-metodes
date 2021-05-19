@@ -65,32 +65,23 @@ double deriv (int n, double func(), double x) {
 }
 
 void newton (int n, double func(), double r[n]) {
-  int nn;
+  int nn, acc = 0;
   if (n % 2 == 1) nn = (n - 1)/2;
   else nn = n/2;
-  double nod[nn];
-  int acc = 0;
-  int s;
-  int sa = sign(func(n, 1/pow(n, 2)));
+  int s, sa = sign(func(n, 1/pow(n, 2)));
   for (int i = 1; i <= pow(n, 2); i++) {
     s = sign(func(n, i*1/pow(n, 2)));
     if (s != sa) {
-      int si = sign(func(n, (2 * i - 1)/(2 * pow(n, 2))));
-      if (si != sa) nod[acc] = (4 * i - 3)/(4 * pow(n, 2));
-      else nod[acc] = (4 * i - 1)/(4 * pow(n, 2));
+      double x = (2 * i - 1)/(2 * pow(n, 2));
+      for (int j = 0; j < 7; j++) {
+        x = x - func(n, x)/deriv(n, func, x);
+        if (n % 2 == 1) r[nn + acc + 1] = x;
+        else r[nn + acc] = x;
+        r[nn - acc - 1] = -x;
+      }
       ++acc;
     }
     sa = s;
-  }
-  for (int i = 0; i < nn; i++) {
-    double x = nod[i], xn;
-    for (int j = 0; j < 7; j++) {
-      xn = x - func(n, x)/deriv(n, func, x);
-      x = xn;
-      if (n % 2 == 1) r[nn + i + 1] = x;
-      else r[nn + i] = x;
-      r[nn - i - 1] = -x;
-    }
   }
   if (n % 2 == 1) r[nn] = 0;
 }
