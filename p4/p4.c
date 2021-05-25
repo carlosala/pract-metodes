@@ -27,6 +27,18 @@ int main (int argc, char* argv[]) {
   newton(n, chRec, chNod);
   coefLeg(n, legNod, legCo);
   coefCh(n, chCo);
+  printf("Legendre nodes:\n");
+  printArray(n, legNod);
+  printf("Chebyshev nodes:\n");
+  printArray(n, chNod);
+  printf("Legendre coeficients:\n");
+  printArray(n, legCo);
+  printf("Chebyshev coeficients:\n");
+  printArray(n, chCo);
+  printf("Integrals 1, 2, 3 (Gaussiana & trapezium):\n");
+  printf("%.16G %.16G\n", calInt(n, legCo, legNod, func1), trapezium(n, -1, 1, func1));
+  printf("%.16G\n", calInt(n, chCo, chNod, func2));
+  printf("%.16G %.16G\n", calInt(n, legCo, legNod, func3), trapezium(n, -1, 1, func3));
   return 0;
 }
 
