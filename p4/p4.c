@@ -9,36 +9,32 @@ void printArray (int n, double[n]);
 double legRec (int, double);
 double chRec (int, double);
 double deriv (int, double(), double);
-void newton (int n, double(), double[n]);
-void coefLeg (int n, double[n], double[n]);
-void coefCh (int n, double[n]);
+void newtonCoef (int n, double(), double[n], double[n]);
 double func1 (double);
 double func2 (double);
 double func3 (double);
 double trapezium (int, double, double, double());
-double calInt (int n, double[n], double[n], double());
+double calInt (int n, double(), double[n], double[n], double());
 
 int main (int argc, char* argv[]) {
   if (argc != 2) return 1;
   int n = atoi(argv[1]);
   if (n < 2) return 1;
-  double legNod[n], chNod[n], legCo[n], chCo[n];
-  newton(n, legRec, legNod);
-  newton(n, chRec, chNod);
-  coefLeg(n, legNod, legCo);
-  coefCh(n, chCo);
+  double legNod[n], chNod[n], legCoef[n], chCoef[n];
+  newtonCoef(n, legRec, legNod, legCoef);
+  newtonCoef(n, chRec, chNod, chCoef);
   printf("Legendre nodes:\n");
   printArray(n, legNod);
   printf("Chebyshev nodes:\n");
   printArray(n, chNod);
   printf("Legendre coeficients:\n");
-  printArray(n, legCo);
+  printArray(n, legCoef);
   printf("Chebyshev coeficients:\n");
-  printArray(n, chCo);
-  printf("Integrals 1, 2, 3 (Gaussiana & trapezium):\n");
-  printf("%.16G %.16G\n", calInt(n, legCo, legNod, func1), trapezium(n, -1, 1, func1));
-  printf("%.16G\n", calInt(n, chCo, chNod, func2));
-  printf("%.16G %.16G\n", calInt(n, legCo, legNod, func3), trapezium(n, -1, 1, func3));
+  printArray(n, chCoef);
+  printf("Integrals 1, 2, 3 (Legendre Chebyshev Trapezium):\n");
+  printf("%.16G %.16G %.16G\n", calInt(n, legRec, legCoef, legNod, func1), calInt(n, chRec, chCoef, chNod, func1), trapezium(n, -1, 1, func1));
+  printf("%.16G %.16G\n", calInt(n, legRec, legCoef, legNod, func2), calInt(n, chRec, chCoef, chNod, func2));
+  printf("%.16G %.16G %.16G\n", calInt(n, legRec, legCoef, legNod, func3), calInt(n, chRec, chCoef, chNod, func3), trapezium(n, -1, 1, func3));
   return 0;
 }
 
@@ -79,50 +75,47 @@ double chRec (int n, double x) {
   return pn;
 }
 
-double deriv (int n, double func(), double x) {
-  return n * (func(n-1, x) - x * (func(n, x)))/(1 - pow(x, 2));
+double deriv (int n, double met(), double x) {
+  return n * (met(n-1, x) - x * (met(n, x)))/(1 - pow(x, 2));
 }
 
-void newton (int n, double func(), double r[n]) {
+void newtonCoef (int n, double met(), double nod[n], double coef[n]) {
   int nn, acc = 0;
   if (n % 2 == 1) nn = (n - 1)/2;
   else nn = n/2;
-  int s, sa = sign(func(n, 1/pow(n, 2)));
+  int s, sa = sign(met(n, 1/pow(n, 2)));
   for (int i = 1; i <= pow(n, 2); i++) {
-    s = sign(func(n, i*1/pow(n, 2)));
+    s = sign(met(n, i/pow(n, 2)));
     if (s != sa) {
       double x = (2 * i - 1)/(2 * pow(n, 2));
       for (int j = 0; j < 7; j++) {
-        x = x - func(n, x)/deriv(n, func, x);
-        if (n % 2 == 1) r[nn + acc + 1] = x;
-        else r[nn + acc] = x;
-        r[nn - acc - 1] = -x;
+        x = x - met(n, x)/deriv(n, met, x);
+        if (n % 2 == 1) nod[nn + acc + 1] = x;
+        else nod[nn + acc] = x;
+        nod[nn - acc - 1] = -x;
       }
       ++acc;
     }
     sa = s;
   }
-  if (n % 2 == 1) r[nn] = 0;
-}
-
-void coefLeg (int n, double nod[n], double r[n]) {
-  for (int i = 0; i < n; i++) {
-    r[i] = 2/((1 - pow(nod[i], 2)) * pow(deriv(n, legRec, nod[i]), 2));
-  }
-}
-
-void coefCh (int n, double r[n]) {
-  for (int i = 0; i < n; i++) {
-    r[i] = M_PI / n;
+  if (n % 2 == 1) nod[nn] = 0;
+  if (met == legRec) {
+    for (int i = 0; i < n; i++) {
+      coef[i] = 2/((1 - pow(nod[i], 2)) * pow(deriv(n, legRec, nod[i]), 2));
+    }
+  } else if (met == chRec) {
+    for (int i = 0; i < n; i++) {
+      coef[i] = M_PI / n;
+    }
   }
 }
 
 double func1 (double x) {
-  return 1./(1 + pow(x, 2));
+  return 1/(1 + pow(x, 2));
 }
 
 double func2 (double x) {
-  return pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - pow(x, 2) + 5;
+  return (pow(x, 8) - 2 * pow(x, 6) + 3 * pow(x, 4) - pow(x, 2) + 5)/sqrt(1-pow(x, 2));
 }
 
 double func3 (double x) {
@@ -140,10 +133,16 @@ double trapezium (int n, double a, double b, double func()) {
   return r;
 }
 
-double calInt(int n, double coef[n], double nod[n], double func()) {
+double calInt(int n, double met(), double coef[n], double nod[n], double func()) {
   double r = 0;
-  for (int i = 0; i < n; i++) {
-    r += coef[i] * func(nod[i]);
+  if (met == legRec) {
+    for (int i = 0; i < n; i++) {
+      r += coef[i] * func(nod[i]);
+    }
+  } else {
+    for (int i = 0; i < n; i++) {
+      r += coef[i] * func(nod[i]) * sqrt(1-pow(nod[i], 2));
+    }
   }
   return r;
 }
