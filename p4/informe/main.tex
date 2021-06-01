@@ -1,0 +1,169 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[catalan]{babel}
+\usepackage{amsmath,amssymb,amsfonts,mathtools}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+
+\geometry{
+  left=25mm,
+  right=25mm,
+  top=30mm,
+  bottom=30mm,
+}
+
+\setlength{\headheight}{13.6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Entrega 4. Quadratura Gaussiana}
+\rhead{Carlo Sala Gancho}
+\cfoot{\thepage}
+
+\begin{document}
+\section*{Apartat A1}
+Després d'escriure el programa per calcular les arrels dels polinomis de Legendre i Chebyshev a l'interval $[-1, 1]$ fent 7 iteracions del mètode de Newton, havent trobat prèviament el primer pivot a partir del mètode de la bisecció, obtenim els següents resultats, per exemple\footnotemark, per $n = 6$. Veiem també la diferència en valor absolut amb els resultats obtinguts dels apunts de Lluís Alsedà:
+\footnotetext{El programa creat permet calcular les arrels $\forall n \in \mathbb{N}$, $n \geq 2$. Només posem $n = 6$ com a exemple per abreviar l'informe una mica.}
+\begin{table}[H]
+\centering
+  \begin{tabular}{cc}
+    Valor obtingut & Diferència apunts\\
+    \toprule
+    $-0.9324695142031521$ & $1.998401444325282 \cdot 10^{-15}$\\
+    \midrule
+    $-0.6612093864662645$ & $4.440892098500626 \cdot 10^{-15}$\\
+    \midrule
+    $-0.2386191860831969$ & $3.108624468950438 \cdot 10^{-15}$\\
+    \midrule
+    $0.2386191860831969$ & $3.108624468950438 \cdot 10^{-15}$\\
+    \midrule
+    $0.6612093864662645$ & $4.440892098500626 \cdot 10^{-15}$\\
+    \midrule
+    $0.9324695142031521$ & $1.998401444325282 \cdot 10^{-15}$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Arrels del polinomi de Legendre amb $n = 6$}
+\end{table}
+\begin{table}[H]
+\centering
+\begin{tabular}{cc}
+    Valor obtingut & Diferència apunts\\
+    \toprule
+    $-0.9659258262890683$ & $1.665334536937735 \cdot 10^{-15}$\\
+    \midrule
+    $-0.7071067811865476$ & $2.442490654175344 \cdot 10^{-15}$\\
+    \midrule
+    $-0.2588190451025207$ & $6.661338147750939 \cdot 10^{-16}$\\
+    \midrule
+    $0.2588190451025207$ & $6.661338147750939 \cdot 10^{-16}$\\
+    \midrule
+    $0.7071067811865476$ & $2.442490654175344 \cdot 10^{-15}$\\
+    \midrule
+    $0.9659258262890683$ & $1.665334536937735 \cdot 10^{-15}$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Arrels del polinomi de Chebyshev amb $n = 6$}
+\end{table}
+Comprovem, per tant, que el programa que permet calcular aquestes arrels és correcta i les calcula amb una bona precisió.
+\clearpage
+\section*{Apartat A2}
+A partir de la fórmula de Quadratura Gaussiana proposada a la pràctica, veiem que els coeficients han de complir exactament la següent equació per $f(x) = x^k$ amb $0 \leq k \leq n-1$, on $x_i$ són les arrels del polinomi:
+\begin{equation}
+  \int_{-1}^1 \omega (x) f(x) dx \approx a_1 f(x_1) + a_2 f(x_2) + \cdots + a_n f(x_n)
+\end{equation}
+Llavors, per cada una de $x^k$ obtenim una equació amb $n$ incògnites (els $a_1, \ldots, a_n$), i obtenim el següent sistema d'$n$ equacions:
+\begin{equation}
+  \left\{
+  \begin{aligned}
+    a_1 f(x_1) + \cdots + a_n f(x_n) &= \int_{-1}^1 \omega (x) \cdot 1 dx\\
+    a_1 f(x_1) + \cdots + a_n f(x_n) &= \int_{-1}^1 \omega (x) \cdot x dx\\
+    a_1 f(x_1) + \cdots + a_n f(x_n) &= \int_{-1}^1 \omega (x) \cdot x^2 dx\\
+    \shortvdotswithin{=}
+    a_1 f(x_1) + \cdots + a_n f(x_n) &= \int_{-1}^1 \omega (x) \cdot x^{n-1} dx\\
+  \end{aligned}
+  \right.
+\end{equation}
+Hem trobat, llavors, el sistema que cal que compleixin els coeficients.
+\section*{Apartat A3 i A4}
+S'ha escrit un programa que permet calcular els coeficients tant del polinomi de Legendre, fent servir la fórmula proposta a la pràctica $a_i = \frac{2}{(1-x_i^2){(P'_n(x_i))}^2}$, i del polinomi de Chebyshev, on tots els coeficients són iguals, amb $a_i = \frac{\pi}{n}$. Posem, com a l'apartat A1, el cas $n = 6$ com a exemple:
+\begin{table}[H]
+\centering
+  \begin{tabular}{cc}
+    Legendre & Chebyshev\\
+    \toprule
+    $0.1713244923791705$ & $0.5235987755982988$\\
+    \midrule
+    $0.3607615730481386$ & $0.5235987755982988$\\
+    \midrule
+    $0.4679139345726913$ & $0.5235987755982988$\\
+    \midrule
+    $0.4679139345726913$ & $0.5235987755982988$\\
+    \midrule
+    $0.3607615730481386$ & $0.5235987755982988$\\
+    \midrule
+    $0.1713244923791705$ & $0.5235987755982988$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Coeficients amb $n = 6$}
+\end{table}
+Efectivament, comparant aquests coeficients amb els dels apunts, veiem que coincideixen.
+\clearpage
+\section*{Apartat A5}
+Aquest apartat ens demana que, un cop calculades les arrels i els coeficients de cada un dels polinomis, que calculem les següents integrals definides:
+\begin{equation*}
+  \int_{-1}^1 \frac{1}{1 + x^2} \qquad \qquad
+  \int_{-1}^1 \frac{x^8 - 2x^6 + 3x^4 - x^2 + 5}{\sqrt{1-x^2}} \qquad \qquad
+  \int_{-1}^1 \left| x \right|
+\end{equation*}
+Per fer-ho farem servir tant el polinomi de Legendre com el de Chebyshev, així com el mètode dels trapezis compost. D'aquesta manera, podrem comparar l'efectivitat de cada un dels polimonis amb cada problema. Vegem els resultats per $n = 2, 4, 6$:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ccccc}
+    $n$ & Legendre & Chebyshev & Trapezis & Resultat real\\
+    \toprule
+    $2$ & $1.500000000000001$ & $1.480960979386122$ & $1.5$ & $1.570796326794897$\\
+    \midrule
+    $4$ & $1.568627450980392$ & $1.590153093587419$ & $1.55$ & $1.570796326794897$\\
+    \midrule
+    $6$ & $1.570731707317074$ & $1.581877758114531$ & $1.561538461538461$ & $1.570796326794897$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Resultats integral 1}
+\end{table}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{cccc}
+    $n$ & Legendre & Chebyshev & Resultat real\\
+    \toprule
+    $2$ & $12.09624564337372$ & $15.90431280879833$ & $16.56699250916493$\\
+    \midrule
+    $4$ & $14.20880233044867$ & $16.54244881655875$ & $16.56699250916493$\\
+    \midrule
+    $6$ & $14.95101134114224$ & $16.56699250916492$ & $16.56699250916493$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Resultats integral 2}
+\end{table}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ccccc}
+    $n$ & Legendre & Chebyshev & Trapezis & Resultat real\\
+    \toprule
+    $2$ & $1.154700538379252$ & $1.570796326794897$ & $1$ & $1$\\
+    \midrule
+    $4$ & $1.042534857261527$ & $1.110720734539592$ & $1$ & $1$\\
+    \midrule
+    $6$ & $1.019894093560785$ & $1.047197551196597$ & $1$ & $1$\\
+    \bottomrule
+  \end{tabular}
+  \caption{Resultats integral 3}
+\end{table}
+El primer que salta a la vista, sens dubte, és que la segona integral no tenim els resultats de el mètode dels trapezis. Ara bé, si ens fixem bé en la funció, veiem que, quan $x = -1, 1$ la funció queda dividida per $0$ i com que el mètode dels trapezis agafa els límits d'integració, ens apareix una divisió per $0$ i, per tant, no podem aplicar aquest mètode. A banda d'això, observem també que el millor resultat de cada integral l'obtenim amb el polinomi que ens esperem, és a dir, amb el que simplifiqui més la funció.\\
+Veiem que, en la primera integral, ens interessa tenim $\omega(x) = 1$ (pes de Legendre) en comptes de $\omega(x) = \frac{1}{\sqrt{1-x^2}}$ (pes de Chebyshev), ja que només estaríem afegint termes al càlcul. I, efectivament, el càlcul de la integral amb Legendre és la que millors resultats obté.\\
+En la segona veiem que el polinomi de Chebyshev domina clarament als altres. Seguint amb el mateix argument d'abans, el fet de tenir al denominador l'invers del pes de Chebyshev, fa que se'ns cance\lgem i i simplifica prou els càlculs, ja que només queda un polinomi. Veiem que, pel cas de $n = 6$, l'error és de vora $10^{-15}$, un autèntic èxit tenint en compte que únicament s'han agafat 6 nodes.\\
+Amb la tercera integral, per contra, passa una cosa curiosa. Primerament veiem que el resultat que obté el polinomi de Chebyshev no és gens bo, i ens fa descartar-lo ja de primeres. El polinomi de Legendre s'hi aproxima prou, però el que millors resultats obté és el mètode dels trapezis, clavant el resultat en tots els casos. Ara bé, si ho pensem un moment veiem que té tot el sentit del món. El mètode dels trapezis divideix divideix el conjunt a integrar en trossos iguals, sense importar quina sigui la funció que pretén integrar. En aquest cas, estem davant d'una funcio lineal (amb l'excepció d'$x = 0$, ja ens entenem) i, per tant, tant és quines particions agafis. El fet de simplificar en aquest cas, és òptim.
+\section*{Conclusions}
+D'aquesta pràctica se'n poden treure moltes coses, ja que hem aplicat tant el mètode de Quadratura Gaussiana amb els polinomis tant de Legendre com de Chebyshev, així com el mètode dels trapezis. El mètode de Quadratura Gaussiana ens dona moltes facilitats a l'hora de calcular integrals que, de sortida, semblarien molt difícils de calcular. Tanmateix, cal triar bé quin polinomi fer servir tenint en compte $\omega(x)$ de cada un d'ells per afinar encara més els càlculs. També cal tenir en compte que no sempre és la millor elecció, com hem vist en la tercera integral. En aquest cas, com que es tractava d'una funció senzilla, el mètode dels trapezis era perfecte. Fent un anàleg a la vida real, és com matar mosques a canonades.
+\end{document}
