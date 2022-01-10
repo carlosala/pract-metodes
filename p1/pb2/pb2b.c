@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 
-float simple (double, double, double);
-double doble (double, double, double);
+float simple(double, double, double);
+double doble(double, double, double);
 
 int main(int argc, char* argv[]) {
   if (argc != 4) {
@@ -18,24 +18,22 @@ int main(int argc, char* argv[]) {
   return 0;
 }
 
-float simple (double x, double y, double z) {
+float simple(double x, double y, double z) {
   if (y * y < 4 * x * z) {
     printf("Discriminante < 0.\n");
     return 0;
-  }
-  else {
-    float r = (-2 * z)/(y + sqrtf(y * y + 4 * x * z));
+  } else {
+    float r = (-2 * z) / (y + sqrtf(y * y + 4 * x * z));
     return r;
   }
 }
 
-double doble (double x, double y, double z) {
+double doble(double x, double y, double z) {
   if (y * y < 4 * x * z) {
     printf("Discriminante < 0.\n");
     return 0;
-  }
-  else {
-    double r = (-2 * z)/(y + sqrt(y * y + 4 * x * z));
+  } else {
+    double r = (-2 * z) / (y + sqrt(y * y + 4 * x * z));
     return r;
   }
 }

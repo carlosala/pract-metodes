@@ -1,13 +1,13 @@
-#include<stdio.h>
-#include<math.h>
-#include<stdlib.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-float simpleOne (int, double*);
-double doubleOne (int, double*);
-float simpleTwo (int, double*);
-double doubleTwo (int, double*);
+float simpleOne(int, double*);
+double doubleOne(int, double*);
+float simpleTwo(int, double*);
+double doubleTwo(int, double*);
 
-int main () {
+int main() {
   int n = 100;
   double v[n];
   for (int i = 0; i < n; i++) {
@@ -22,61 +22,60 @@ int main () {
   return 0;
 }
 
-float simpleOne (int n, double* x) {
+float simpleOne(int n, double* x) {
   float xt0 = 0;
   float s0 = 0;
   for (int i = 0; i < n; i++) {
     xt0 += x[i];
   }
-  float xt = xt0/n; 
-  for(int i = 0; i < n; i++) {
-    s0 += (x[i]-xt)*(x[i]-xt);
+  float xt = xt0 / n;
+  for (int i = 0; i < n; i++) {
+    s0 += (x[i] - xt) * (x[i] - xt);
   }
-  float s = s0/(n-1);
+  float s = s0 / (n - 1);
   return s;
 }
 
-double doubleOne (int n, double* x) {
+double doubleOne(int n, double* x) {
   double xt0 = 0;
   double s0 = 0;
   for (int i = 0; i < n; i++) {
     xt0 += x[i];
   }
-  double xt = xt0/n; 
-  for(int i = 0; i < n; i++) {
+  double xt = xt0 / n;
+  for (int i = 0; i < n; i++) {
     s0 += (x[i] - xt) * (x[i] - xt);
   }
-  double s = s0/(n-1);
+  double s = s0 / (n - 1);
   return s;
 }
 
-float simpleTwo (int n, double* x) {
+float simpleTwo(int n, double* x) {
   float s;
   float x2 = 0;
   float x1 = 0;
-  for(int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     x2 += x[i] * x[i];
   }
-  for(int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     x1 += x[i];
   }
-  x1 = (x1 * x1)/n;
-  s = (x2 - x1)/(n - 1);
+  x1 = (x1 * x1) / n;
+  s = (x2 - x1) / (n - 1);
   return s;
 }
 
-double doubleTwo (int n, double* x) {
+double doubleTwo(int n, double* x) {
   double s;
   double x2 = 0;
   double x1 = 0;
-  for(int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     x2 += x[i] * x[i];
   }
-  for(int i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     x1 += x[i];
   }
-  x1 = (x1 * x1)/n;
-  s = (x2 - x1)/(n - 1);
+  x1 = (x1 * x1) / n;
+  s = (x2 - x1) / (n - 1);
   return s;
 }
-

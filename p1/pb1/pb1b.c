@@ -1,10 +1,10 @@
-#include<stdio.h>
-#include<math.h>
+#include <math.h>
+#include <stdio.h>
 
-float simple (double);
-double doble (double);
+float simple(double);
+double doble(double);
 
-int main () {
+int main() {
   double x = 1.2e-5;
   float rs = simple(x);
   double rd = doble(x);
@@ -12,12 +12,12 @@ int main () {
   return 0;
 }
 
-float simple (double x) {
-  float result = 2*sinf(x/2)*sinf(x/2)/(x*x);
+float simple(double x) {
+  float result = 2 * sinf(x / 2) * sinf(x / 2) / (x * x);
   return result;
 }
 
-double doble (double x) {
-  double result = 2*sin(x/2)*sin(x/2)/(x*x);
+double doble(double x) {
+  double result = 2 * sin(x / 2) * sin(x / 2) / (x * x);
   return result;
 }
